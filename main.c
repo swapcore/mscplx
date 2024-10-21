@@ -20,6 +20,7 @@
 */
 
 #include <stdio.h>
+#include "format/id3v230/id3v230.h"
 
 int main(int arv, char ** argc)
 {

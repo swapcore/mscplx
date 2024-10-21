@@ -22,5 +22,30 @@
 #ifndef _ID3V230_H_
 #define _ID3V230_H_
 
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <memory.h>
+
+// codigos de error
+
+#define ID3V230_OK        0
+#define ID3V230_NOVALID   1     // Etiqueta no valida
+#define ID3V230_ERRFILE   2     // Error al abrir el archivo
+#define ID3V230_ERRMEMORY 3     // Error al reservar memoria
+
+typedef struct TagID3V230 {
+	uint8_t id[3];         // Identificador
+	uint8_t ver;           // Version
+	uint8_t rev;           // Revisión
+	uint8_t flags;         // Banderas
+	uint32_t tagsize;      // Tamaño de etiqueta
+	size_t filesize;       // Tamaño del archivo
+	wchar_t * filename;    // Nombre del archivo
+	uint8_t filebuf[1];    // Datos del archivo
+}ID3V230TAG;
+
+ID3V230TAG * ID3V230Open(wchar_t * filename);
+int ID3V230Close(ID3V230TAG *tag);
 
 #endif
