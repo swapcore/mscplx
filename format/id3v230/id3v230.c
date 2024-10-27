@@ -25,66 +25,60 @@
 ID3V230TAG * ID3V230Open(wchar_t * filename)
 {
 	ID3V230TAG *tag;
-	uint32_t tagsize=0;
 	size_t filesize;
-	uint8_t buf[10];
-	FILE *song;
+	FILE *fp;
 
-	if(!(song=_wfopen(filename,L"rb"))) {
-		return 0;
+	if(!(fp=_wfopen(filename,L"rb"))) {
+		return NULL;
 	}
 
-	// cargar cabecera
-	fread(buf,10,1,song);
+	fseek(fp,0,SEEK_END);
+	filesize = ftell(fp);
+	rewind(fp);
+
+	if(!(tag=calloc(1,sizeof(ID3V230TAG)+filesize))) {
+		fclose(fp);
+		return NULL;
+	}
+
+	// copiar datos del archivo
+	fread(tag->filebuf,1,filesize,fp);
+
+	fclose(fp);
+
+	// copiar datos de cabecera
+	tag->id[0]     = tag->filebuf[0];
+	tag->id[1]     = tag->filebuf[1];
+	tag->id[2]     = tag->filebuf[2];
+	tag->ver       = tag->filebuf[3];
+	tag->rev       = tag->filebuf[4];
+	tag->flags     = tag->filebuf[5];
+	tag->tagsize  |= (tag->filebuf[6]&0x7F)<<21;
+	tag->tagsize  |= (tag->filebuf[7]&0x7F)<<14;
+	tag->tagsize  |= (tag->filebuf[8]&0x7F)<<7;
+	tag->tagsize  |= (tag->filebuf[9]&0x7F)<<0;
+	tag->filesize  = filesize;
 
 	// verificar identificador
-	if(memcmp(buf,"ID3",3)) {
+	if(memcmp(tag->id,"ID3",3)) {
 		// identificador no valido
-		fclose(song);
+		free(tag);
 		return NULL;
 	}
 
 	// verificar propiedades de etiqueta
-	if(buf[3]>4||buf[4]>0||buf[5]>7) {
-		fclose(song);
+	if(tag->ver>4||tag->rev>0||tag->flags>7) {
+		free(tag);
 		return NULL;
 	}
 
 	// verificar tamaño de etiqueta
-	if(*((uint32_t*)(&buf[6]))&0x80808080) {
-		fclose(song);
+	if(tag->tagsize&0x80808080) {
+		free(tag);
 		return NULL;
 	}
 
-	// copiar tamaño de etiqueta
-	tagsize |= (buf[6]&0x7F)<<21;
-	tagsize |= (buf[7]&0x7F)<<14;
-	tagsize |= (buf[8]&0x7F)<<7;
-	tagsize |= (buf[9]&0x7F)<<0;
-
-	fseek(song,0,SEEK_END);
-	filesize = ftell(song);
-	rewind(song);
-
-	if(!(tag=malloc(sizeof(ID3V230TAG)+filesize))) {
-		fclose(song);
-		return NULL;
-	}
-	
-	// recopilar encabezado de etiqueta
-	tag->id[0]    = buf[0];
-	tag->id[1]    = buf[1];
-	tag->id[2]    = buf[2];
-	tag->ver      = buf[3];
-	tag->rev      = buf[4];
-	tag->flags    = buf[5];
-	tag->tagsize  = tagsize;
-	tag->filesize = filesize;
-
-	// copiar datos del archivo
-	fread(tag->filebuf,1,tag->filesize,song);
-
-	fclose(song);
+	tag->filename = wcsdup(filename);
 
 	return tag;
 }
@@ -93,6 +87,7 @@ ID3V230TAG * ID3V230Open(wchar_t * filename)
 int ID3V230Close(ID3V230TAG *tag)
 {
 	if(!tag) return 0;
+	free(tag->filename);
 	free(tag);
 	
 	return ID3V230_OK;
