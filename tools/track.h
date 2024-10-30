@@ -22,6 +22,13 @@
 #ifndef _TRACK_H_
 #define _TRACK_H_
 
+#define LIMIT_TRACKS 999
 
+#include <time.h>
+#include <stdlib.h>
+#include <wchar.h>
+
+int * GenerateTrackList(int tracks);
+wchar_t * EncodeTrack(int num);
 
 #endif

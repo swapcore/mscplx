@@ -21,8 +21,23 @@
 
 #include <stdio.h>
 #include "format/id3v230/id3v230.h"
+#include "tools/track.h"
 
 int main(int arv, char ** argc)
 {
+	int a=0;
+	int * buf;
+	wchar_t *c;
+
+	buf=GenerateTrackList(143);
+
+	for(a=0; a<143; a++) {
+		c=EncodeTrack(buf[a]);
+		wprintf(L"track: %s\n",c);
+		free(c);
+	}
+
+	free(buf);
+
 	return 0;
 }
