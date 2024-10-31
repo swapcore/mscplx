@@ -49,26 +49,35 @@ int * GenerateTrackList(int tracks)
 wchar_t * EncodeTrack(int num)
 {
 	wchar_t *c;
-	wchar_t temp[4];
-	int a=4;
+	wchar_t temp[6];
 
-	if(c=calloc(4,sizeof(wchar_t))) {
+	if(num>LIMIT_TRACKS) {
+		return NULL;
+	}
+
+	if(c=calloc(6,sizeof(wchar_t))) {
 		_itow(num,temp,10);
 
 		if(num<=9) {
 			c[0] = L'0';
 			c[1] = L'0';
 			c[2] = temp[0];
+			c[3] = L'.';
+			c[4] = L' ';
 		}
 		else if(num<=99) {
 			c[0] = L'0';
 			c[1] = temp[0];
 			c[2] = temp[1];
+			c[3] = L'.';
+			c[4] = L' ';
 		}
 		else {
 			c[0] = temp[0];
 			c[1] = temp[1];
 			c[2] = temp[2];
+			c[3] = L'.';
+			c[4] = L' ';
 		}
 	}
 
