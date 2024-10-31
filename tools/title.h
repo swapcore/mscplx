@@ -22,6 +22,10 @@
 #ifndef _TITLE_H_
 #define _TITLE_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
+wchar_t * CreateTitle(wchar_t *num, wchar_t *str);
 
 #endif

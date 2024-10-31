@@ -22,19 +22,22 @@
 #include <stdio.h>
 #include "format/id3v230/id3v230.h"
 #include "tools/track.h"
+#include "tools/title.h"
 
 int main(int arv, char ** argc)
 {
 	int a=0;
 	int * buf;
-	wchar_t *c;
+	wchar_t *c,*d;
 
 	buf=GenerateTrackList(143);
 
 	for(a=0; a<143; a++) {
 		c=EncodeTrack(buf[a]);
-		wprintf(L"track: %s\n",c);
+		d=CreateTitle(c,L"Hola");
+		wprintf(L"track: %s\n",d);
 		free(c);
+		free(d);
 	}
 
 	free(buf);

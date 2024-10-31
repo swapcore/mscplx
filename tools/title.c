@@ -20,3 +20,22 @@
 */
 
 #include "title.h"
+
+// crear titulo
+wchar_t * CreateTitle(wchar_t *num, wchar_t *str)
+{
+	wchar_t *c;
+	size_t len1,len2;
+
+	len1 = wcslen(num);
+	len2 = wcslen(str);
+
+	if(!(c=calloc(len1+len2+1,sizeof(wchar_t)))) {
+		return NULL;
+	}
+
+	memcpy(c,num,len1*sizeof(wchar_t));
+	memcpy(c+len1,str,len2*sizeof(wchar_t));
+
+	return c;
+}
