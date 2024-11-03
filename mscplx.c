@@ -1,5 +1,5 @@
 /*
-	Enumerador de canciones
+	mscplx: Ennumerador de canciones
 	Copyright (c) 2024 Oscar Elías
 	
 	This file is part of mscplx.
@@ -20,25 +20,3 @@
 */
 
 #include "mscplx.h"
-#include <stdio.h>
-
-int main(int arv, char ** argc)
-{
-	int a=0;
-	int * buf;
-	wchar_t *c,*d;
-
-	buf=GenerateTrackList(143);
-
-	for(a=0; a<143; a++) {
-		c=EncodeTrack(buf[a]);
-		d=CreateTitle(c,L"Hola");
-		wprintf(L"track: %s\n",d);
-		free(c);
-		free(d);
-	}
-
-	free(buf);
-
-	return 0;
-}
