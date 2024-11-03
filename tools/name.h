@@ -1,5 +1,5 @@
 /*
-	mscplx: Ennumerador de canciones
+	Nobmre de archivo
 	Copyright (c) 2024 Oscar Elías
 	
 	This file is part of mscplx.
@@ -19,13 +19,15 @@
 	<https://www.gnu.org/licenses/>.
 */
 
-#ifndef _MSCPLX_H_
-#define _MSCPLX_H_
+#ifndef _NAME_H_
+#define _NAME_H_
 
-#include "format/id3v230/id3v230.h"
-#include "tools/queue.h"
-#include "tools/title.h"
-#include "tools/track.h"
-#include "tools/name.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <wchar.h>
+
+wchar_t * DecodeName(wchar_t *filename);
+wchar_t * EncodeName(wchar_t *filename, wchar_t *ext);
 
 #endif
