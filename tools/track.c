@@ -83,3 +83,21 @@ wchar_t * CreateTrackPrefix(int num)
 
 	return c;
 }
+
+// Actualizar prefijo de pista
+int UpdateTrackPrefix(wchar_t *str, int num)
+{
+	wchar_t *prefix;
+
+	prefix=CreateTrackPrefix(num);
+
+	// cambiando pista
+	str[0] = prefix[0];
+	str[1] = prefix[1];
+	str[2] = prefix[2];
+	str[3] = prefix[3];
+
+	free(prefix);
+
+	return 1;
+}
