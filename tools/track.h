@@ -29,6 +29,6 @@
 #include <wchar.h>
 
 int * GenerateTrackList(int tracks);
-wchar_t * EncodeTrack(int num);
+wchar_t * CreateTrackPrefix(int num);
 
 #endif

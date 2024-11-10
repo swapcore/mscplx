@@ -45,8 +45,8 @@ int * GenerateTrackList(int tracks)
 	return tracklist;
 }
 
-// codificar numero de pista
-wchar_t * EncodeTrack(int num)
+// crear prefijo de pista
+wchar_t * CreateTrackPrefix(int num)
 {
 	wchar_t *c;
 	wchar_t temp[6];

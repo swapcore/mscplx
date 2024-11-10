@@ -31,7 +31,7 @@ int main(int arv, char ** argc)
 	buf=GenerateTrackList(143);
 
 	for(a=0; a<143; a++) {
-		c=EncodeTrack(buf[a]);
+		c=CreateTrackPrefix(buf[a]);
 		d=CreateTitle(c,L"Hola");
 		wprintf(L"track: %s\n",d);
 		free(c);
